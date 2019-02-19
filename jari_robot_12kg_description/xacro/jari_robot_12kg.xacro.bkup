@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<robot name="jari_robot_12kg" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- PROPERTY LIST -->
+    <xacro:property name="PI" value="3.141592654"/>
+	<!-- LENGTH PROPERTY -->
+    <xacro:property name="L1" value="0.198"/>
+    <xacro:property name="L2" value="0.235"/>
+    <xacro:property name="L3" value="0.185"/>
+    <xacro:property name="L4" value="0.670"/>
+    <xacro:property name="L5" value="0.115"/>
+    <xacro:property name="L6" value="-0.01"/>
+    <xacro:property name="L7" value="0.2455"/>
+	<xacro:property name="L8" value="0.4795"/>
+	<xacro:property name="L9" value="0.1164"/>
+	<!-- JOINT LIMIT PROPERTY -->
+	<xacro:property name="JOINT1_MIN" value="${(170*PI/180)}"/>
+	<xacro:property name="JOINT1_MAX" value="${(-170*PI/180)}"/>
+	<xacro:property name="JOINT2_MIN" value="${(110*PI/180)}"/>
+	<xacro:property name="JOINT2_MAX" value="${(-110*PI/180)}"/>
+	<xacro:property name="JOINT3_MIN" value="${(40*PI/180)}"/>
+	<xacro:property name="JOINT3_MAX" value="${(-220*PI/180)}"/>
+	<xacro:property name="JOINT4_MIN" value="${(180*PI/180)}"/>
+	<xacro:property name="JOINT4_MAX" value="${(-180*PI/180)}"/>
+	<xacro:property name="JOINT5_MIN" value="${(120*PI/180)}"/>
+	<xacro:property name="JOINT5_MAX" value="${(-120*PI/180)}"/>
+	<xacro:property name="JOINT6_MIN" value="${(360*PI/180)}"/>
+	<xacro:property name="JOINT6_MAX" value="${(-360*PI/180)}"/>
+<!-- LINK -->
+<link name="base_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/0_base.stl"/>
+        </geometry>
+        <material name="jari_robot_color">
+            <color rgba="1.2 1.2 1.2 1"/>
+        </material>
+    </visual>
+</link>
+
+<link name="base_to_arm1_link">
+    <visual>
+        <origin xyz="0 0 ${-L1}" rpy="0 0 0" />
+		<!--origin xyz="0 0 -0.198" rpy="0 0 0" /-->
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/1_base_to_arm1.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="arm1_link">
+    <visual>
+        <origin xyz="${-L3} 0 ${-(L1+L2)}" rpy="0 0 0" />
+		<!--origin xyz="-0.185 0 -0.433" rpy="0 0 0" /-->
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/2_arm1.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="elbow_link">
+    <visual>
+		<origin xyz="${-L3} 0 ${-(L1+L2+L4)}" rpy="0 0 0" />
+        <!--origin xyz="-0.185 0 -1.103" rpy="0 0 0" /-->
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/3_elbow.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="arm2_link">
+    <visual>
+        <origin xyz="${-(L3+L7)} ${-L6} ${-(L1+L2+L4+L5)}" rpy="0 0 0" />
+		<!--origin xyz="-0.4305 0.01 -1.218" rpy="0 0 0" /-->
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/4_arm2.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="wrist_link">
+    <visual>
+		<origin xyz="${-(L3+L7+L8)} ${-L6} ${-(L1+L2+L4+L5)}" rpy="0 0 0" />
+        <!--origin xyz="-0.91 0.01 -1.218" rpy="0 0 0" /-->
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/5_wrist.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="tool_link">
+    <visual>
+		<origin xyz="${-(L3+L7+L8+L9)} ${-L6} ${-(L1+L2+L4+L5)}" rpy="0 0 0" />
+        <!--origin xyz="-1.0264 0.01 -1.218" rpy="0 0 0" /-->
+        <geometry>
+        <mesh filename="package://jari_robot_12kg/meshes/6_tool.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<!-- JOINT -->
+<joint name="base_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 ${L1}"/>
+    <parent link="base_link"/>
+    <child link="base_to_arm1_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0" lower="${JOINT1_MIN}" upper="${JOINT1_MAX}" velocity="10"/>
+</joint>
+
+<joint name="base_arm1_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="${L3} 0 ${L2}"/>
+    <parent link="base_to_arm1_link"/>
+    <child link="arm1_link"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="${JOINT2_MIN}" upper="${JOINT2_MAX}" velocity="10"/>
+</joint>
+
+<joint name="arm1_elbow_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 ${L4}"/>
+    <parent link="arm1_link"/>
+    <child link="elbow_link"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="${JOINT3_MIN}" upper="${JOINT3_MAX}" velocity="10"/>
+</joint>
+
+<joint name="elbow_arm2_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="${L7} ${L6} ${L5}"/>
+    <parent link="elbow_link"/>
+    <child link="arm2_link"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="${JOINT4_MIN}" upper="${JOINT4_MAX}" velocity="10"/>
+</joint>
+
+<joint name="arm2_wrist_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="${L8} 0 0"/>
+    <parent link="arm2_link"/>
+    <child link="wrist_link"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="${JOINT5_MIN}" upper="${JOINT5_MAX}" velocity="10"/>
+</joint>
+
+<joint name="wrist_tool_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="${L9} 0 0"/>
+    <parent link="wrist_link"/>
+    <child link="tool_link"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="${JOINT6_MIN}" upper="${JOINT6_MAX}" velocity="10"/>
+</joint>
+
+</robot>

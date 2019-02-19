@@ -1,0 +1,140 @@
+<?xml version="1.0" ?>
+<robot name="jari_robot_12kg">
+
+<!-- LINK -->
+<link name="base_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/0_base.stl"/>
+        </geometry>
+        <material name="jari_robot_color">
+            <color rgba="1.2 1.2 1.2 1"/>
+        </material>
+    </visual>
+</link>
+
+<link name="base_to_arm1_link">
+    <visual>
+        <origin xyz="0 0 -0.198" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/1_base_to_arm1.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="arm1_link">
+    <visual>
+        <origin xyz="-0.185 0 -0.433" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/2_arm1.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="elbow_link">
+    <visual>
+        <origin xyz="-0.185 0 -1.103" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/3_elbow.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="arm2_link">
+    <visual>
+        <origin xyz="-0.4305 0.01 -1.218" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/4_arm2.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="wrist_link">
+    <visual>
+        <origin xyz="-0.91 0.01 -1.218" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/5_wrist.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="wrist_to_tool_link">
+    <visual>
+        <origin xyz="-1.0264 0.01 -1.218" rpy="0 0 0" />
+        <geometry>
+        <mesh filename="package://jari_robot_12kg_description/meshes/6_tool.stl"/>
+        </geometry>
+        <material name="jari_robot_color" />
+    </visual>
+</link>
+
+<link name="tool_link" />
+
+<!-- JOINT -->
+<joint name="base_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.198"/>
+    <parent link="base_link"/>
+    <child link="base_to_arm1_link"/>
+    <axis xyz="0 0 1"/>
+	<!-- limit: -170 ~ 170 -->
+    <limit effort="0" lower="-2.96705972839036" upper="2.96705972839036" velocity="10"/>
+</joint>
+
+<joint name="base_arm1_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.185 0 0.235"/>
+    <parent link="base_to_arm1_link"/>
+    <child link="arm1_link"/>
+    <axis xyz="0 1 0"/>
+	<!-- limit: -110 ~ 110 -->
+    <limit effort="0" lower="-1.9198621771937625" upper="1.9198621771937625" velocity="10"/>
+</joint>
+
+<joint name="arm1_elbow_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.67"/>
+    <parent link="arm1_link"/>
+    <child link="elbow_link"/>
+    <axis xyz="0 1 0"/>
+	<!-- limit: -220 ~ 40 -->
+    <limit effort="0" lower="-3.839724354387525" upper="0.6981317007977318" velocity="10"/>
+</joint>
+
+<joint name="elbow_arm2_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.2455 -0.01 0.115"/>
+    <parent link="elbow_link"/>
+    <child link="arm2_link"/>
+    <axis xyz="1 0 0"/>
+	<!-- limit: -180 ~ 180 -->
+    <limit effort="0" lower="-3.141592653589793" upper="3.141592653589793" velocity="10"/>
+</joint>
+
+<joint name="arm2_wrist_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.4795 0 0"/>
+    <parent link="arm2_link"/>
+    <child link="wrist_link"/>
+    <axis xyz="0 1 0"/>
+	<!-- limit: -120 ~ 120 -->
+    <limit effort="0" lower="-2.0943951023931953" upper="2.0943951023931953" velocity="10"/>
+</joint>
+
+<joint name="wrist_tool_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.1164 0 0"/>
+    <parent link="wrist_link"/>
+    <child link="wrist_to_tool_link"/>
+    <axis xyz="1 0 0"/>
+	<!-- limit: -360 ~ 360 -->
+    <limit effort="0" lower="-6.283185307179586" upper="6.283185307179586" velocity="10"/>
+</joint>
+
+<joint name="tool_joint" type="fixed">
+	<origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="wrist_to_tool_link"/>
+    <child link="tool_link"/>
+</joint>
+
+</robot>

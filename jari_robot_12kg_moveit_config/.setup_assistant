@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: jari_robot_12kg_description
+    relative_path: urdf/jari_robot_12kg.urdf
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/jari_robot_12kg.srdf
+  CONFIG:
+    author_name: yunshuixin
+    author_email: june_bao@163.com
+    generated_timestamp: 1550378157

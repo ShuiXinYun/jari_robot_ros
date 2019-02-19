@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="model" default="$(find xacro)/xacro --inorder '$(find jari_robot_12kg_description)/xacro/jari_robot_12kg.xacro'"/>
+  <arg name="gui" default="true" />
+  <arg name="rvizconfig" default="$(find jari_robot_12kg_description)/config/jari_robot_visulization.rviz" />
+
+  <param name="robot_description" command="$(arg model)" />
+  <param name="use_gui" value="$(arg gui)"/>
+
+  <!--node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /-->
+  <node name="joint_state_publisher" pkg="jari_robot_12kg_description" type="joint_state_publish.py" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+</launch>
